@@ -2,13 +2,13 @@
   "name": "dcb",
   "version": "1.0.0",
   "description": "DB Builder for Dot Browser Chromium",
-  "main": "bin/index.js",
+  "main": "bin/dc.js",
   "repository": "https://github.com/dothq/dc.git",
   "author": "Dot HQ <contact@dothq.co>",
   "license": "MIT",
   "private": false,
   "bin": {
-    "dc": "./bin/index.js"
+    "dc": "./bin/dc.js"
   },
   "dependencies": {
     "chalk": "^4.1.0",

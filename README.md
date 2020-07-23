@@ -6,7 +6,7 @@
 ```bash
 npm i dcb -g
 ...or...
-yarn add --global dcb 
+yarn global add dcb
 ```
 
 ### Usage

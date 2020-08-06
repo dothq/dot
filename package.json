@@ -1,17 +1,20 @@
 {
-  "name": "dcb",
-  "version": "1.1.0",
-  "description": "DB Builder for Dot Browser Chromium",
+  "name": "tig",
+  "version": "1.0.0",
+  "description": "Building toolchain for Dot Firefox",
   "main": "bin/dc.js",
-  "repository": "https://github.com/dothq/dc.git",
+  "repository": "https://github.com/dothq/tig.git",
   "author": "Dot HQ <contact@dothq.co>",
   "license": "MIT",
   "private": false,
   "bin": {
-    "dc": "./bin/dc.js"
+    "tig": "./bin/tig.js"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "chalk": "^4.1.0",
-    "commander": "^6.0.0"
+    "commander": "^6.0.0",
+    "hg": "^0.3.3",
+    "isomorphic-git": "^1.7.4"
   }
 }

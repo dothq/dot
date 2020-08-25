@@ -1,14 +1,14 @@
 {
-  "name": "tiggy",
+  "name": "@dothq/build",
   "version": "1.2.0",
-  "description": "Building toolchain for Dot Firefox",
-  "main": "bin/tig.js",
-  "repository": "https://github.com/dothq/tig.git",
+  "description": "Builder",
+  "main": "bin/dot.js",
+  "repository": "https://github.com/dothq/dot.git",
   "author": "Dot HQ <contact@dothq.co>",
   "license": "MIT",
   "private": false,
   "bin": {
-    "tig": "./bin/tig.js"
+    "dot": "./bin/dot.js"
   },
   "dependencies": {
     "axios": "^0.19.2",

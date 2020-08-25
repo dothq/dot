@@ -1,0 +1,28 @@
+{
+    "name": "Dot Browser",
+    "id": "co.dothq.browser",
+    "builder": "mach",
+    "targets": {
+        "base": {
+            "tag": ["ff", "firefox", "moz", "mozilla"],
+            "name": "Firefox Stable",
+            "http": "https://hg.mozilla.org/releases/mozilla-release",
+            "repository": {
+                "branch": "default"
+            },
+            "type": "mercurial"
+        },
+        "patch": {
+            "tag": ["dot", "dotbrowser", "dothq", "db"],
+            "name": "Dot Browser Stable",
+            "http": "https://github.com/dothq/browser",
+            "repository": {
+                "branch": "main"
+            },
+            "type": "git"
+        }
+    },
+    "flags": [
+        "--enable-artifact-mode"
+    ]
+}

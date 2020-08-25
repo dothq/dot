@@ -13,10 +13,12 @@
   "dependencies": {
     "axios": "^0.19.2",
     "chalk": "^4.1.0",
+    "cheerio": "^1.0.0-rc.3",
     "command-exists": "^1.2.9",
     "commander": "^6.0.0",
     "hg": "^0.3.3",
     "isomorphic-git": "^1.7.4",
+    "progress": "^2.0.3",
     "rimraf": "^3.0.2"
   }
 }

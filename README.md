@@ -1,20 +1,16 @@
-# tig
-tig is a mercurial to git bridge, mainly used for merging firefox with dot browser
-
-```ts
-"git".split("").reverse().join("") // tig
-```
+# dot
+dot is a tooling and building cli for dot browser
 
 ### Install
 
 ```bash
-npm i tiggy -g
+npm i @dothq/build -g
 ...or...
-yarn global add tiggy
+yarn global add @dothq/build
 ```
 
 ### Usage
 
 ```bash
-tig help
+dot help
 ```

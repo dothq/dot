@@ -14,6 +14,7 @@ const commandExists = require('command-exists').sync;
 const git = require('isomorphic-git')
 const hg = require("hg");
 const { exec } = require('child_process');
+const { resolve } = require('path');
 
 program.version('1.0.0');
 
@@ -84,28 +85,61 @@ const ask = (q) => {
   })
 }
 
+const setup = async (tag, manifestOverride) => {
+  const home = require('os').homedir();
+  const cache = resolve(home, ".cache");
+
+  if(!fs.existsSync(resolve(cache, "dot", tag))) {
+    log("PROCESS", `Downloading \`${tag}\` manifest...`)
+
+    manifest = await downloadManifest(manifestOverride, tag);
+
+    log("SUCCESS", `Downloaded \`${tag}\` manifest.`)
+
+    manifest.trusted = true;
+
+    fs.writeFileSync(resolve(cache, "dot", tag), JSON.stringify(manifest, 2), "utf-8")
+  } else {
+    manifest = JSON.parse(fs.readFileSync(resolve(cache, "dot", tag)))
+  }
+
+  const { name, id, author, targets } = manifest;
+
+  if(!name || !id || !author || !builder || !targets || !targets.base || !targets.patch) { 
+    log("ERROR", `Failed to load build script \`${tag}\`. It seems to be malformed.`)
+    process.exit(-1)
+  }
+
+  log("INFO", `Setting up \`${name} (${id})\` by \`${author}\`.`)
+
+  log("INFO", `Cloning \`base (${targets.base.name})\``)
+
+  fs.mkdirSync(resolve(__dirname, tag));
+}
+
 program
   .command('get <tag> [manifestOverride]')
   .description('get a project by its tag name')
   .action(async (tag, manifestOverride) => {
-    log("PROCESS", `Downloading \`${tag}\` manifest...`)
+    const home = require('os').homedir();
+    const cache = resolve(home, ".cache");
 
-    const manifest = await downloadManifest(manifestOverride, tag);
+    try { fs.mkdirSync(resolve(cache)) } catch(e) {}
+    try { fs.mkdirSync(resolve(cache, "dot")) } catch(e) {}
 
-    log("SUCCESS", `Downloaded \`${tag}\` manifest.`)
+    if(fs.existsSync(resolve(cache, "dot", tag))) return setup(tag, manifestOverride);
 
-    const { name, id, author } = manifest;
+    const trust = await ask(`${chalk.blue.bold("QUESTION")} Do you trust the build script \`${tag}\`? ${chalk.white.bold('[yes/no]')} `);
 
-    if(!name || !id || !author) { 
-      log("ERROR", `Failed to load build script \`${tag}\`. It seems to be malformed.`)
-      process.exit(-1)
+    if(trust.toLowerCase() == "yes" || trust.toLowerCase() == "y") {
+      log("INFO", `Saving trust setting to \`${resolve(cache, "dot", tag)}\`...`)
+
+      return setup(tag, manifestOverride)
+    } else {
+      log("INFO", `Exiting...`)
+      process.exit(0)
     }
 
-    const trust = await ask(`${chalk.blue.bold("QUESTION")} Do you trust the build script \`${name}\` created by \`${author}\`? ${chalk.white.bold('[yes/no]')} `);
-
-    console.log(trust)
-
-    log("INFO", `Setting up \`${name} (${id})\`.`)
   });
 
 program

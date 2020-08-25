@@ -106,3 +106,7 @@ dist
 # tig testing files
 venkman
 try
+
+# c++
+*.out
+*.exe

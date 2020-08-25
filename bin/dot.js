@@ -8,12 +8,13 @@ const http = require('isomorphic-git/http/node')
 const path = require("path");
 const axios = require('axios');
 const readline = require("readline");
+const rimraf = require("rimraf");
 
 const commandExists = require('command-exists').sync;
 
 const git = require('isomorphic-git')
 const hg = require("hg");
-const { exec } = require('child_process');
+const { spawn } = require('child_process');
 const { resolve } = require('path');
 
 program.version('1.0.0');
@@ -85,6 +86,22 @@ const ask = (q) => {
   })
 }
 
+const compileDotGet = async (target, location) => {
+  const { type, name, http, repository } = target;
+
+  const runner = type == "mercurial" ? "hg" : type;
+
+  const isWindows = require("os").platform == "win32"
+
+  if(fs.existsSync(resolve(__dirname, "dot-get.out"))) { await rimraf.sync(`${__dirname}/dot-get.${isWindows ? "exe" : "out"}`) }
+  
+  runShell(`g++ -o ${__dirname}/dot-get.${isWindows ? "exe" : "out"} ${__dirname}/get.cpp`).then(r => {
+    log("INFO", `Running \`dot-get.${isWindows ? "exe" : "out"}\` binary...`)
+    log("INFO", `Cloning \`base (${name})\`...`)
+    spawn(`${__dirname}/dot-get.${isWindows ? "exe" : "out"}`, [runner, http, location, repository.branch], { stdio: 'inherit' });
+  })
+}
+
 const setup = async (tag, manifestOverride) => {
   const home = require('os').homedir();
   const cache = resolve(home, ".cache");
@@ -103,7 +120,7 @@ const setup = async (tag, manifestOverride) => {
     manifest = JSON.parse(fs.readFileSync(resolve(cache, "dot", tag)))
   }
 
-  const { name, id, author, targets } = manifest;
+  const { name, id, author, targets, builder } = manifest;
 
   if(!name || !id || !author || !builder || !targets || !targets.base || !targets.patch) { 
     log("ERROR", `Failed to load build script \`${tag}\`. It seems to be malformed.`)
@@ -112,9 +129,14 @@ const setup = async (tag, manifestOverride) => {
 
   log("INFO", `Setting up \`${name} (${id})\` by \`${author}\`.`)
 
-  log("INFO", `Cloning \`base (${targets.base.name})\``)
+  try {
+    fs.mkdirSync(resolve(process.cwd(), tag));
+  } catch(e) {
+    log("ERROR", e.message);
+    process.exit(0)
+  }
 
-  fs.mkdirSync(resolve(__dirname, tag));
+  compileDotGet(targets.base, resolve(process.cwd(), tag))
 }
 
 program

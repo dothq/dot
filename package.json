@@ -1,6 +1,6 @@
 {
   "name": "@dothq/build",
-  "version": "1.2.0",
+  "version": "1.0.1",
   "description": "Builder",
   "main": "bin/dot.js",
   "repository": "https://github.com/dothq/dot.git",

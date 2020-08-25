@@ -16,6 +16,7 @@ const runCppHook = async (target, location) => {
     if(fs.existsSync(resolve(resolve(__dirname, "../bin"), "dot-get.out"))) { await rimraf.sync(`${resolve(__dirname, "../bin")}/dot-get.${isWindows ? "exe" : "out"}`) }
     
     runShell(`g++ -o ${resolve(__dirname, "../bin")}/dot-get.${isWindows ? "exe" : "out"} ${resolve(__dirname, "../bin")}/get.cpp`).then(r => {
+        
         log("INFO", `Running \`dot-get.${isWindows ? "exe" : "out"}\` binary...`)
         log("INFO", `Cloning \`base (${name})\`...`)
         spawn(`${resolve(__dirname, "../bin")}/dot-get.${isWindows ? "exe" : "out"}`, [runner, http, location, repository.branch], { stdio: 'inherit' });

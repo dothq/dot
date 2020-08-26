@@ -1,5 +1,5 @@
 # dot
-dot is a tooling and building cli for dot browser
+dot is version control manager if you work with multiple version control systems
 
 ### Install
 

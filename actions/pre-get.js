@@ -64,7 +64,7 @@ const preGet = async (tag, manifestOverride) => {
     await sleep(2500);
 
     console.log(chalk.strikethrough("\n―――――――――――――――――――――――――――――――――――――――――――――――――――――――――\n"))
-    log("SUCCESS", `You are now ready to build ${chalk.bold("Dot Browser")}!`)
+    log("SUCCESS", `🎉 You are now ready to build ${chalk.bold("Dot Browser")}!`)
     console.log()
     log("INFO", `Total time took: ${chalk.bold(fancyTime(Date.now() - t))}.`)
     log("INFO", `Targets cloned: ${chalk.bold(Object.entries(targets).length)}.`)

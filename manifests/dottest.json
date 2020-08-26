@@ -1,0 +1,29 @@
+{
+    "name": "Dot Browser Test",
+    "author": "Dot HQ",
+    "id": "co.dothq.browsertest",
+    "builder": "mach",
+    "targets": {
+        "base": {
+            "tag": ["venkman"],
+            "name": "Mozilla Venkman",
+            "http": "https://hg.mozilla.org/venkman",
+            "repository": {
+                "branch": "default"
+            },
+            "type": "mercurial"
+        },
+        "patch": {
+            "tag": ["dot", "dotbrowser", "dothq", "db"],
+            "name": "Dot Browser Stable",
+            "http": "https://github.com/dothq/browser",
+            "repository": {
+                "branch": "main"
+            },
+            "type": "git"
+        }
+    },
+    "flags": [
+        "--enable-artifact-mode"
+    ]
+}
